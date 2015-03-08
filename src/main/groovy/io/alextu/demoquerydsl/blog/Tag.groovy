@@ -1,4 +1,4 @@
-package io.alextizzle.demoquerydsl.blog
+package io.alextu.demoquerydsl.blog
 
 /**
  * Created by alexis on 08/03/15.

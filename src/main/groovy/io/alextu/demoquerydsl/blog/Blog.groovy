@@ -1,4 +1,4 @@
-package io.alextizzle.demoquerydsl.blog
+package io.alextu.demoquerydsl.blog
 
 import groovy.transform.Canonical
 

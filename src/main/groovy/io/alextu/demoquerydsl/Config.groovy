@@ -1,4 +1,4 @@
-package io.alextizzle.demoquerydsl
+package io.alextu.demoquerydsl
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

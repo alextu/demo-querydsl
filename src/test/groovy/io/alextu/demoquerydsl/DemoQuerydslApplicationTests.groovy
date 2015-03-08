@@ -1,6 +1,6 @@
-package io.alextizzle.demoquerydsl
+package io.alextu.demoquerydsl
 
-import io.alextizzle.demoquerydsl.support.BlogRepository
+import io.alextu.demoquerydsl.support.BlogRepository
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +17,12 @@ class DemoQuerydslApplicationTests {
 
 	@Autowired
 	BlogRepository blogRepository
+
+	@Test
+	void testFetchBlogWithId() {
+		def blog = blogRepository.fetchBlog(1)
+		assert blog.title == 'Titre 1'
+	}
 
 	@Test
 	void testFetchAllBlogs() {

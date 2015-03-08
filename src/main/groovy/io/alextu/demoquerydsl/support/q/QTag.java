@@ -1,4 +1,4 @@
-package io.alextizzle.demoquerydsl.support.q;
+package io.alextu.demoquerydsl.support.q;
 
 import static com.mysema.query.types.PathMetadataFactory.*;
 

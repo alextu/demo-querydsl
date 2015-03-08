@@ -1,12 +1,12 @@
-package io.alextizzle.demoquerydsl.support
+package io.alextu.demoquerydsl.support
 import com.mysema.query.Tuple
 import com.mysema.query.sql.SQLQuery
 import com.mysema.query.types.ConstructorExpression
 import com.mysema.query.types.QTuple
-import io.alextizzle.demoquerydsl.blog.Blog
-import io.alextizzle.demoquerydsl.support.q.QBlog
-import io.alextizzle.demoquerydsl.support.q.QBlogTag
-import io.alextizzle.demoquerydsl.support.q.QTag
+import io.alextu.demoquerydsl.support.q.QBlog
+import io.alextu.demoquerydsl.support.q.QBlogTag
+import io.alextu.demoquerydsl.support.q.QTag
+import io.alextu.demoquerydsl.blog.Blog
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jdbc.query.QueryDslJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -23,6 +23,11 @@ class BlogRepository {
     QBlogTag BLOG_TAG = QBlogTag.blogTag
     QTag TAG = QTag.tag
 
+    Blog fetchBlog(int id) {
+        SQLQuery sql = queryDslJdbcTemplate.newSqlQuery().from(BLOG).where(BLOG.id.eq(id))
+        queryDslJdbcTemplate.queryForObject(sql, ConstructorExpression.create(Blog, BLOG.id, BLOG.title))
+    }
+
     List<Blog> fetchAllBlogs() {
         SQLQuery sql = queryDslJdbcTemplate.newSqlQuery().from(BLOG)
         queryDslJdbcTemplate.query(sql, ConstructorExpression.create(Blog, BLOG.id, BLOG.title))
@@ -34,14 +39,14 @@ class BlogRepository {
                             .leftJoin(BLOG_TAG).on(BLOG.id.eq(BLOG_TAG.idBlog))
                             .leftJoin(TAG).on(BLOG_TAG.idTag.eq(TAG.id))
         List<Tuple> tuples = queryDslJdbcTemplate.query(sql, new QTuple(BLOG.id, BLOG.title, TAG.name))
-        tuples.groupBy blogId() collect tags()
+        tuples.groupBy blogId() collect blogWithTags()
     }
 
     private Closure blogId() {
         return { Tuple t -> t.get(BLOG.id) }
     }
 
-    private Closure tags() {
+    private Closure blogWithTags() {
         return { int id, List<Tuple> ts ->
                 def title = ts[0].get(BLOG.title)
                 def tags = ts*.get(TAG.name)
